@@ -110,13 +110,22 @@ module.exports = {
                 if(!user){
                     res.status(404).json("User not registered")
                 }else{
-                    Project.findOneAndUpdate({_id : req.params.id, members : {$nin : user.email, $comment: "Don't allow negative inputs."}}, {$push : { members : user.id}}, {new : true}, function(err, member){
+                    var idUser = user._id
+                    Project.findOneAndUpdate({_id : req.params.id, members : {$nin : [user._id]}}, {$push : { members : user.id}}, {new : true}, function(err, member){
                         if(err){
+                            console.log(err)
                             res.status(400).json("User already join the project")
                         }else{
-                            res.status(200).json(member)
+                            User.findOneAndUpdate({_id :idUser}, {$push : { projects : req.params.id}}, {new : true}, function(err, member){
+                                if(err){
+                                    res.status(400).json(err)
+                                }else{
+                                    res.status(200).json(member)
+                                }
+                            })
                         }
                     })
+                    
                 }
             }
         })

@@ -27,6 +27,7 @@ projectSchema.post('save', function(doc){
     })
 })
 
+
 const Project = mongoose.model('Project', projectSchema)
 
 module.exports = Project

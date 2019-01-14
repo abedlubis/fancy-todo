@@ -331,36 +331,34 @@
                 `)
             })
         })
-        var email = $('#nameMember').val()
+       
         var currentIdGroup = ''
-        $('#addmemberform').submit(function(e){
-            e.preventDefault()
-            console.log($(this).attr(id))
-            console.log("adding...",)
+        
+        function tambahMemberBaru(id) {
+            var email = $('#nameMember').val()
+            console.log(email,"=============")
             $.ajax({
                     type: 'PUT',
-                    url: `http://localhost:3000/projects/${currentIdGroup}/invite/${email}`,
+                    url: `http://localhost:3000/projects/${id}/invite/${email}`,
                     dataType: 'json',
                     headers : {
                         token : localStorage.getItem('token')
                     }
             })
             .done(function(project){
-                console.log(project,"========")
+                $("#addGroupForm").trigger("reset");
+                showDetailGroup(currentIdGroup)
             })
             .fail(function(xhr, status, error){
                 var errorMessage = xhr.status + ': ' + xhr.responseText
                 console.log(errorMessage)
-                $('#addNewMember').append(`
+                $('#detailGroup .input-group').append(`
                     <div class="alert alert-danger" role="alert">
                         ${errorMessage}
                     </div>
                 `)
-            })
-        })
-    
-        
-        //FUNCTION
+            })    
+        }
         function checkLogin(){
             if(localStorage.getItem('token')){
                 $('#app').show()
@@ -497,16 +495,16 @@
                 $('#detailGroup').append(`
                     <h3> ${group.name}</h3>
                     <div class="input-group mb-3">
-                        <form class="form-inline" id="addmemberform">
-                            <input type="text" class="form-control" id="nameMember" placeholder="input member name" aria-label="input member name" aria-describedby="button-addon2">
-                            <button class="btn btn-primary" type="submit" id="${group._id}" value="Add New Member">Add New Member</button>   
+                        <form class="form-inline" id="addGroupForm">
+                            <input type="text" class="form-control" id="nameMember" placeholder="input member email" aria-label="input member name" aria-describedby="button-addon2">
                         </form>
+                            <button class="btn btn-primary" onclick="tambahMemberBaru(this.id)" type="submit" name="${group._id}" id="${group._id}" value="Add New Member">Add New Member</button>   
                     </div>
                     <h5> Member (${group.members.length}) : </h5>
                     <div id="listofmember">
                     </div>
                     <h5> Task : </h5> <button class="btn btn-primary" data-toggle="modal" data-target="#addGroupTask">Add Group Task</button>
-                    <div  class="row" id="listoftaskgroup">
+                    <div  class="row mt-2" id="listoftaskgroup">
 
                     </div>
                 `)
