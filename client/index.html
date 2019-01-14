@@ -333,7 +333,7 @@
         })
         var email = $('#nameMember').val()
         var currentIdGroup = ''
-        $('#addNewMember').submit(function(e){
+        $('#addmemberform').submit(function(e){
             e.preventDefault()
             console.log($(this).attr(id))
             console.log("adding...",)
@@ -497,10 +497,10 @@
                 $('#detailGroup').append(`
                     <h3> ${group.name}</h3>
                     <div class="input-group mb-3">
-                        <div class="form-inline" id="addNewMember">
+                        <form class="form-inline" id="addmemberform">
                             <input type="text" class="form-control" id="nameMember" placeholder="input member name" aria-label="input member name" aria-describedby="button-addon2">
                             <button class="btn btn-primary" type="submit" id="${group._id}" value="Add New Member">Add New Member</button>   
-                        </div>
+                        </form>
                     </div>
                     <h5> Member (${group.members.length}) : </h5>
                     <div id="listofmember">
