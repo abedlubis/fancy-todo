@@ -47,7 +47,9 @@ module.exports = {
         }
         User.create(input, function(err,users){
             if(err){
-                res.status(400).json(err)
+                res.status(400).json({error : err,
+                    message : err.message
+                })
             }else{
                 res.status(200).json({
                     msg : "Succesfull!! User registered",

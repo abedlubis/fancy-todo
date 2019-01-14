@@ -13,13 +13,13 @@ var userSchema = new Schema({
                 return User.findOne({email})
                 .then(user => {
                     if(user){
-                        throw('Email already exist')
+                        throw new ('Email already exist')
                     }
                 })
                 .catch(err => {
                     throw err
                 })
-            },
+            }, message : 'Email Already Exist',
             match : [/\S+@\S+\.\S+/, 'email is invalid'],
         }
     },

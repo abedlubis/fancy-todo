@@ -102,7 +102,7 @@
                 </div><!-- /.modal-dialog -->
             </div><!-- /.modal -->
             
-        <div class="container">
+        <div class="container" id="main-page">
             <div class="row mt-4">
                 <div class="col-md-2">
                     <div class="card">
@@ -235,11 +235,57 @@
 					console.log(dataLogin,"ccccccc")
                     localStorage.setItem('token', dataLogin.token)
                     checkLogin()
+                    $('#main-page').prepend(`
+                    <div class="alert alert-success" role="alert">
+                        berhasil login
+                    </div>
+                    `)
+                    setTimeout(() => {
+                        $('.alert').hide()
+                    }, 3000);
 				})
-				.fail(function(error){
-                    console.log(error)
+				.fail(function(xhr, status, error){
+                var errorMessage = xhr.status + ': ' + xhr.responseText
+                console.log(errorMessage)
+                $('.sign').prepend(`
+                    <div class="alert alert-danger" role="alert">
+                        ${errorMessage}
+                    </div>
+                `)
             })
         })
+        $('#register-form').submit(function(e){
+            e.preventDefault();
+            var input = {
+                email : $('#emailsignup').val(),
+                password : $('#passwordsignup').val(),
+                firstName : $('#firstNameSignUp').val(),
+                LastName : $('#LastnameSignUp').val()
+            }
+            $.ajax({
+					type: 'POST',
+					url: 'http://localhost:3000/register/',
+					dataType: 'json',
+					data: input
+				})
+				.done(function(dataLogin){
+                    checkLogin()
+                    $('.sign').prepend(`
+                        <div class="alert alert-danger" role="alert">
+                            Berhasil Daftar, login dahulu
+                        </div>
+                    `)
+				})
+				.fail(function(error){
+                console.log(error.responseJSON)
+                $('.sign-container').prepend(`
+                    <div class="alert alert-danger" role="alert">
+                        ${error.responseJSON.message}
+                    </div>
+                `)
+            })
+        })
+        
         $('#addTaskForm').submit(function(e){
             e.preventDefault()
             var input = {
