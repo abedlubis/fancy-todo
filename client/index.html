@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Dosis:300|Lato:300,400,600,700|Roboto+Condensed:300,700|Open+Sans+Condensed:300,600|Open+Sans:400,300,600,700|Maven+Pro:400,700" rel="stylesheet">  
     <!-- Main css -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">    <link rel="stylesheet" href="css/style.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.2.1/minty/bootstrap.min.css" rel="stylesheet" integrity="sha384-jsT0TI7JBEWn8YstmA/9zrJCL1V9Nc3W8o0sjFOWfu7QFRWjxwELS43/lFzo9t6S" crossorigin="anonymous">    
+    <link rel="stylesheet" href="css/style.css">
 
     <title>Todo Fancy</title>
 </head>
@@ -102,7 +103,7 @@
                 </div><!-- /.modal-dialog -->
             </div><!-- /.modal -->
             
-        <div class="container" id="main-page">
+        <div id="main-page">
             <div class="row mt-4">
                 <div class="col-md-2">
                     <div class="card">
@@ -112,7 +113,7 @@
                         </ul>
                     </div>
                     <div class="card mt-2" id="list-group" style="display:none">
-                        <div class="card-header">
+                        <div class="card-header bg-warning">
                             Group Project
                         </div>
                         <ul class="list-group list-group-flush" >
@@ -128,13 +129,15 @@
                         </div>
                     </div>
                     <div id="menu-project" style="display:none">
-                        <div class="input-group mb-3">
-                            <form class="form-inline" id="addNewGroup">
-                                <input type="text" class="form-control" id="nameGroup" placeholder="input group name" aria-label="input group name" aria-describedby="button-addon2">
-                                <div class="input-group-append">
-                                  <input class="btn btn-primary" type="submit" id="button-addon2" value="Add New Group"></input>
-                                </div>
-                            </form>
+                        <div class=" row input-group mb-3">
+                            <div class="col-md-12">
+                                <form class="form-inline" id="addNewGroup">
+                                    <input type="text" class="form-control" id="nameGroup" placeholder="input group name" aria-label="input group name" aria-describedby="button-addon2">
+                                    <div class="input-group-append">
+                                      <input class="btn btn-primary" type="submit" id="button-addon2" value="Add New Group"></input>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                         <div id="detailGroup">
                             
@@ -217,415 +220,18 @@
     <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>    
-    <script>
-        checkLogin()
-        $('#login-form').submit(function(e){
-            e.preventDefault();
-            var input = {
-                email : $('#emailLogin').val(),
-                password : $('#passwordLogin').val()
-            }
-            $.ajax({
-					type: 'POST',
-					url: 'http://localhost:3000/login/',
-					dataType: 'json',
-					data: input
-				})
-				.done(function(dataLogin){
-					console.log(dataLogin,"ccccccc")
-                    localStorage.setItem('token', dataLogin.token)
-                    checkLogin()
-                    $('#main-page').prepend(`
-                    <div class="alert alert-success" role="alert">
-                        berhasil login
-                    </div>
-                    `)
-                    setTimeout(() => {
-                        $('.alert').hide()
-                    }, 3000);
-				})
-				.fail(function(xhr, status, error){
-                var errorMessage = xhr.status + ': ' + xhr.responseText
-                console.log(errorMessage)
-                $('.sign').prepend(`
-                    <div class="alert alert-danger" role="alert">
-                        ${errorMessage}
-                    </div>
-                `)
-            })
-        })
-        $('#register-form').submit(function(e){
-            e.preventDefault();
-            var input = {
-                email : $('#emailsignup').val(),
-                password : $('#passwordsignup').val(),
-                firstName : $('#firstNameSignUp').val(),
-                LastName : $('#LastnameSignUp').val()
-            }
-            $.ajax({
-					type: 'POST',
-					url: 'http://localhost:3000/register/',
-					dataType: 'json',
-					data: input
-				})
-				.done(function(dataLogin){
-                    checkLogin()
-                    $('.sign').prepend(`
-                        <div class="alert alert-danger" role="alert">
-                            Berhasil Daftar, login dahulu
-                        </div>
-                    `)
-				})
-				.fail(function(error){
-                console.log(error.responseJSON)
-                $('.sign-container').prepend(`
-                    <div class="alert alert-danger" role="alert">
-                        ${error.responseJSON.message}
-                    </div>
-                `)
-            })
-        })
-        
-        $('#addTaskForm').submit(function(e){
-            e.preventDefault()
-            var input = {
-                title : $('#titleTaskForm').val(),
-                description : $('#descTaskForm').val(),
-                due_date : $('#dueTaskForm').val()
-            }
-            $.ajax({
-					type: 'POST',
-					url: 'http://localhost:3000/tasks/',
-					dataType: 'json',
-                    data: input,
-                    headers : {
-                        token : localStorage.getItem('token')
-                    }
-            })
-            .done(function(task){
-                $('#addNewTask').modal('toggle')
-                fetchTask()
-            })
-            .fail(function(xhr, status, error){
-                var errorMessage = xhr.status + ': ' + xhr.responseText
-                console.log(errorMessage)
-                $('.modal-body').prepend(`
-                    <div class="alert alert-danger" role="alert">
-                        ${errorMessage}
-                    </div>
-                `)
-            })
-        })
-        $('#addGroupTaskForm').submit(function(e){
-            e.preventDefault()
-            var input = {
-                title : $('#titleGroupTaskForm').val(),
-                description : $('#descGroupTaskForm').val(),
-                due_date : $('#dueGroupTaskForm').val()
-            }
-            $.ajax({
-					type: 'POST',
-					url: `http://localhost:3000/projects/${currentIdGroup}/task`,
-					dataType: 'json',
-                    data: input,
-                    headers : {
-                        token : localStorage.getItem('token')
-                    }
-            })
-            .done(function(task){
-                $('#addGroupTask').modal('toggle')
-                showDetailGroup(currentIdGroup)
-            })
-            .fail(function(xhr, status, error){
-                var errorMessage = xhr.status + ': ' + xhr.responseText
-                console.log(errorMessage)
-                $('.modal-body').prepend(`
-                    <div class="alert alert-danger" role="alert">
-                        ${errorMessage}
-                    </div>
-                `)
-            })
-        })
+    <script src="./js/task.js"></script>
+    <script src="./js/auth.js"></script>
+    <script src="./js/group.js"></script>
+    <script> 
+        $(document).ready(function(){
+            checkLogin()
+        });
+        var currentIdGroup = '';
         $('.modal').on('hidden.bs.modal', function(){
             $(this).find('form')[0].reset();
         });
-        $('#addNewGroup').submit(function(e){
-            e.preventDefault()
-            var input = {
-                name : $('#nameGroup').val()
-            }
-            $.ajax({
-					type: 'POST',
-					url: 'http://localhost:3000/projects/',
-					dataType: 'json',
-                    data: input,
-                    headers : {
-                        token : localStorage.getItem('token')
-                    }
-            })
-            .done(function(project){
-                $("#addNewGroup").trigger("reset");
-                fetchGroup()
-            })
-            .fail(function(xhr, status, error){
-                var errorMessage = xhr.status + ': ' + xhr.responseText
-                console.log(errorMessage)
-                $('#addNewGroup').append(`
-                    <div class="alert alert-danger" role="alert">
-                        ${errorMessage}
-                    </div>
-                `)
-            })
-        })
-       
-        var currentIdGroup = ''
         
-        function tambahMemberBaru(id) {
-            var email = $('#nameMember').val()
-            console.log(email,"=============")
-            $.ajax({
-                    type: 'PUT',
-                    url: `http://localhost:3000/projects/${id}/invite/${email}`,
-                    dataType: 'json',
-                    headers : {
-                        token : localStorage.getItem('token')
-                    }
-            })
-            .done(function(project){
-                $("#addGroupForm").trigger("reset");
-                showDetailGroup(currentIdGroup)
-            })
-            .fail(function(xhr, status, error){
-                var errorMessage = xhr.status + ': ' + xhr.responseText
-                console.log(errorMessage)
-                $('#detailGroup .input-group').append(`
-                    <div class="alert alert-danger" role="alert">
-                        ${errorMessage}
-                    </div>
-                `)
-            })    
-        }
-        function checkLogin(){
-            if(localStorage.getItem('token')){
-                $('#app').show()
-                fetchTask()
-                fetchGroup()
-                $('#login').hide()
-                $('#signup').hide()
-            }else{
-                $('#login').show()
-                $('#app').hide()
-                $('#signup').hide()   
-            }
-        }
-        function fetchTask(){
-            console.log("load data")
-            $('#list-task').empty()
-            $.ajax({
-                url : 'http://localhost:3000/tasks/myTask', 
-                headers : {
-                    token : localStorage.getItem('token')
-                }
-            })
-            .done(function(tasks){
-                tasks.forEach(task => {
-                    var date = new Date (task.due_date).toDateString()
-                    $('#list-task').append(`
-                        <div class="col-md-4">
-                            <div class="card" style="max-width: 15rem;">
-                                    <div class="card-body">
-                                        <h5 class="card-title">${task.title}</h5>
-                                        <h6 class="card-subtitle mb-2 text-muted">Due : ${date}</h6>
-                                        <p class="card-text">${task.description}</p>
-                                        <div style="justify-content: center">
-                                            <input type="button" name=${task._id} class="btn btn-primary btn-sm" value="${task.status}" onclick="updateStatusTask(this.name, this.value)"></input>
-                                            <input type="button" name=${task._id} class="btn btn-danger btn-sm" onclick="deleteTask(this.name)" value="Delete"></input>
-                                        </div>
-                                    </div>
-                            </div>
-                        </div>
-                    `)
-                });
-                
-            })
-            .fail(function(err){
-                console.log(err)
-            })
-        }
-        function fetchGroup(){
-            $('#list-group ul').empty()
-            $.ajax({
-                url : 'http://localhost:3000/projects/myProject', 
-                headers : {
-                    token : localStorage.getItem('token')
-                }
-            })
-            .done(function(user){
-                    user.projects.forEach(project=>{
-                        $('#list-group ul').append(`
-                            <li class="list-group-item" id=${project._id} onclick="showDetailGroup(this.id)">${project.name}</li>
-                        `)
-                    })
-                
-            })
-            .fail(function(err){
-                console.log(err)
-            })
-        }
-        function deleteTask(id){
-            $.ajax({
-                type : 'DELETE',
-                url : `http://localhost:3000/tasks/${id}`, 
-                headers : {
-                    token : localStorage.getItem('token')
-                }
-            })
-            .done(function(tasks){
-                fetchTask()
-            })
-            .fail(function(err){
-                console.log(err)
-            })
-        }
-        function updateStatusTask(id, status){
-            // console.log("masuk sini")
-            if(status == 'done'){
-                var newStatus = 'on progress'
-            }else{
-                var newStatus = 'done'
-            }
-            $.ajax({
-                type : 'PUT',
-                url : `http://localhost:3000/tasks/${id}`, 
-                headers : {
-                    token : localStorage.getItem('token')
-                },
-                data : {
-                    status : newStatus
-                }
-            })
-            .done(function(tasks){
-                fetchTask()
-                showDetailGroup(currentIdGroup)
-            })
-            .fail(function(err){
-                console.log(err)
-            })
-        }
-        function showProjectTab(){
-            $('#menu-project').show()
-            $('#menu-task').hide()
-            $('#list-group').show()
-            $('.tab-task').removeClass('active')
-            $('.tab-project').addClass('active')
-        }
-        function showTaskTab(){
-            $('#menu-task').show()
-            $('#menu-project').hide()
-            $('#list-group').hide()
-            $('.tab-task').addClass('active')
-            $('.tab-project').removeClass('active')
-        }
-        
-        function showDetailGroup(id){
-            currentIdGroup = id;
-            $('#detailGroup').empty()
-            $.ajax({
-                url : `http://localhost:3000/projects/${id}`, 
-                headers : {
-                    token : localStorage.getItem('token')
-                }
-            })
-            .done(function(group){
-                console.log(group)
-                $('#detailGroup').append(`
-                    <h3> ${group.name}</h3>
-                    <div class="input-group mb-3">
-                        <form class="form-inline" id="addGroupForm">
-                            <input type="text" class="form-control" id="nameMember" placeholder="input member email" aria-label="input member name" aria-describedby="button-addon2">
-                        </form>
-                            <button class="btn btn-primary" onclick="tambahMemberBaru(this.id)" type="submit" name="${group._id}" id="${group._id}" value="Add New Member">Add New Member</button>   
-                    </div>
-                    <h5> Member (${group.members.length}) : </h5>
-                    <div id="listofmember">
-                    </div>
-                    <h5> Task : </h5> <button class="btn btn-primary" data-toggle="modal" data-target="#addGroupTask">Add Group Task</button>
-                    <div  class="row mt-2" id="listoftaskgroup">
-
-                    </div>
-                `)
-                group.members.forEach(member=>{
-                    $('#listofmember').append(`
-                    <ul>
-                        <li> ${member.email}</li>
-                    </ul>
-                    `)
-                })
-                group.tasks.forEach(task=>{
-                    var date = new Date (task.due_date).toDateString()
-                    $('#listoftaskgroup').append(`
-                    <div class="col-md-4">
-                        <div class="card" style="max-width: 15rem;">
-                                <div class="card-body">
-                                    <h5 class="card-title">${task.title}</h5>
-                                    <h6 class="card-subtitle mb-2 text-muted">Due : ${date}</h6>
-                                    <p class="card-text">${task.description}</p>
-                                    <div style="justify-content: center">
-                                        <input type="button" name=${task._id} class="btn btn-primary btn-sm" value="${task.status}" onclick="updateStatusTask(this.name, this.value)"></input>
-                                        <input type="button" name=${task._id} class="btn btn-danger btn-sm" onclick="deleteTask(this.name)" value="Delete"></input>
-                                    </div>
-                                </div>
-                        </div>
-                    </div>
-                    `)
-                })
-            })
-            .fail(function(err){
-                console.log(err)
-            })
-        }
-
-        function showLoginForm(){
-            $('#login').show()
-            $('#app').hide()
-            $('#signup').hide()  
-        }
-        function showSignUpForm(){
-            $('#signup').show()  
-            $('#login').hide()
-            $('#app').hide()
-        }
-        function logOut(){
-            localStorage.removeItem('token')
-            signOutGoogle()
-            checkLogin()
-        }
-        function onSignIn(googleUser) {
-            var tokenId = googleUser.getAuthResponse().id_token;
-            $.ajax({
-                type: 'POST',
-                url: 'http://localhost:3000/googlesign/',
-                dataType: 'json',
-                data: {
-                    token: tokenId
-                }
-            })
-            .done(function(dataLogin){
-                console.log(dataLogin,"ccccccc")
-                localStorage.setItem('token', dataLogin.token)
-                checkLogin()
-            })
-            .fail(function(error){
-                console.log(error)
-            })
-        }
-        function signOutGoogle() {
-            var auth2 = gapi.auth2.getAuthInstance();
-            auth2.signOut().then(function () {
-                console.log('User signed out.');
-            });
-        }
-
 
     </script>
 </body>
