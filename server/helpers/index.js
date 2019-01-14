@@ -12,8 +12,8 @@ function compare(password, passHash){
 function sign(params){
     return  jwt.sign(params, process.env.JWT_SECRET)
 }
-function verifyToken(token){
+function verifyJWT(token){
     return jwt.verify(token, process.env.JWT_SECRET)
 }
 
-module.exports = {encrypt, compare, verifyToken, sign}
+module.exports = {encrypt, compare, verifyJWT, sign}

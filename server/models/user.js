@@ -31,7 +31,8 @@ var userSchema = new Schema({
     },
     firstName: String,
     lastName: String,
-    tasks: [{ type: Schema.Types.ObjectId, ref: 'Todo'}],
+    tasks: [{ type: Schema.Types.ObjectId, ref: 'Task'}],
+    projects: [{ type: Schema.Types.ObjectId, ref: 'Project'}],
     provider: {
         type: String,
         default: 'manual'

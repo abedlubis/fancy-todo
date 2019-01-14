@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="google-signin-client_id" content="538354353006-m1asnrg9t3e0vp3j1tk30chuknv12dv7.apps.googleusercontent.com">
+    <!-- Font Icon -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Dosis:300|Lato:300,400,600,700|Roboto+Condensed:300,700|Open+Sans+Condensed:300,600|Open+Sans:400,300,600,700|Maven+Pro:400,700" rel="stylesheet">  
+    <!-- Main css -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">    <link rel="stylesheet" href="css/style.css">
+
+    <title>Todo Fancy</title>
+</head>
+<body>
+    <div id="app">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light container">
+            <a class="navbar-brand" href="#">Todo Fancy</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item mr-3">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addNewTask">
+                            New Task
+                        </button>                    
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="logOut()" href="#">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div id="addNewTask" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title text-xs-center">Create new task</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addTaskForm">
+                            <input type="hidden" name="_token" value="">
+                            <div class="form-group">
+                                <label class="control-label">Title</label>
+                                <div>
+                                    <input type="text" class="form-control input-lg" name="title" id="titleTaskForm" value="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Description</label>
+                                <div>
+                                    <input type="text" class="form-control input-lg" name="decription" id="descTaskForm">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Due Date</label>
+                                <div>
+                                    <input type="date" class="form-control input-lg" name="due_date" id="dueTaskForm">
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </form>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        <div id="addGroupTask" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title text-xs-center">Create new task in Group</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form id="addGroupTaskForm">
+                                <input type="hidden" name="_token" value="">
+                                <div class="form-group">
+                                    <label class="control-label">Title</label>
+                                    <div>
+                                        <input type="text" class="form-control input-lg" name="title" id="titleGroupTaskForm" value="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Description</label>
+                                    <div>
+                                        <input type="text" class="form-control input-lg" name="decription" id="descGroupTaskForm">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Due Date</label>
+                                    <div>
+                                        <input type="date" class="form-control input-lg" name="due_date" id="dueGroupTaskForm">
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </form>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+            
+        <div class="container">
+            <div class="row mt-4">
+                <div class="col-md-2">
+                    <div class="card">
+                        <ul class="list-group list-group-flush">
+                            <li onclick="showTaskTab()" class="list-group-item active tab-task">Task</li>
+                            <li onclick="showProjectTab()" class="list-group-item tab-project">Project</li>
+                        </ul>
+                    </div>
+                    <div class="card mt-2" id="list-group" style="display:none">
+                        <div class="card-header">
+                            Group Project
+                        </div>
+                        <ul class="list-group list-group-flush" >
+                            <li class="list-group-item">Group Statis</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="col-md-10">
+                    <div id="menu-task">
+                        <div class="row" id="list-task">
+                            
+                        </div>
+                    </div>
+                    <div id="menu-project" style="display:none">
+                        <div class="input-group mb-3">
+                            <form class="form-inline" id="addNewGroup">
+                                <input type="text" class="form-control" id="nameGroup" placeholder="input group name" aria-label="input group name" aria-describedby="button-addon2">
+                                <div class="input-group-append">
+                                  <input class="btn btn-primary" type="submit" id="button-addon2" value="Add New Group"></input>
+                                </div>
+                            </form>
+                        </div>
+                        <div id="detailGroup">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div id="login">
+        <section class="sign">
+            <div class="sign-container">
+                <div class="signin-image">
+                    <figure><img src="images/signin-image.jpg" alt="sing up image"></figure>
+                    <a href="#" onclick="showSignUpForm()" class="signup-link">Create an account</a>
+                </div>
+                <div class="signin-form">
+                    <h2 class="form-title">Sign In!</h2>
+                    <form class="mt-4" id="login-form">
+                        <div class="input-group">
+                            <label><i class="fas fa-envelope-open"></i></label>
+                            <input type="email"  id="emailLogin" placeholder="Your Email"/>
+                        </div>
+                        <div class="input-group">
+                            <label><i class="fas fa-lock"></i></label>
+                            <input type="password" id="passwordLogin" placeholder="Password"/>
+                        </div>
+                        <div class="input-group form-button">
+                            <input type="submit" name="signin" id="signin" class="form-submit" value="Log in"/>
+                        </div>
+                    </form>
+                    <div class="social-login">
+                        <span class="social-label">
+                            login with   
+                        </span>
+                        <a href=""><i class="g-signin2" data-onsuccess="onSignIn"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div id="signup">
+        <section class="sign">
+            <div class="sign-container">
+                <div class="signup-form">
+                    <h2 class="form-title">Sign up!</h2>
+                    <form class="mt-4" id="register-form">
+                        <div class="input-group">
+                            <label><i class="fas fa-envelope-open"></i></label>
+                            <input type="email"  id="emailsignup" placeholder="Your Email"/>
+                        </div>
+                        <div class="input-group">
+                            <label><i class="fas fa-lock"></i></label>
+                            <input type="password" name="pass" id="passwordsignup" placeholder="Password"/>
+                        </div>
+                        <div class="input-group">
+                            <label><i class="fas fa-user"></i></label>
+                            <input type="text"  id="firstName" placeholder="First Name"/>
+                        </div>
+                        <div class="input-group">
+                            <label><i></i></label>
+                            <input type="text"  id="lastName" placeholder="Last Name"/>
+                        </div>
+                        <div class="input-group form-button">
+                            <input type="submit" name="signup" id="signup" class="form-submit" value="Register"/>
+                        </div>
+                    </form>
+                </div>
+                <div class="signup-image">
+                    <figure><img src="images/signup-image.jpg" alt="sing up image"></figure>
+                    <a href="#" onclick="showLoginForm()" class="signin-link">I am already member</a>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>    
+    <script>
+        checkLogin()
+        $('#login-form').submit(function(e){
+            e.preventDefault();
+            var input = {
+                email : $('#emailLogin').val(),
+                password : $('#passwordLogin').val()
+            }
+            $.ajax({
+					type: 'POST',
+					url: 'http://localhost:3000/login/',
+					dataType: 'json',
+					data: input
+				})
+				.done(function(dataLogin){
+					console.log(dataLogin,"ccccccc")
+                    localStorage.setItem('token', dataLogin.token)
+                    checkLogin()
+				})
+				.fail(function(error){
+                    console.log(error)
+            })
+        })
+        $('#addTaskForm').submit(function(e){
+            e.preventDefault()
+            var input = {
+                title : $('#titleTaskForm').val(),
+                description : $('#descTaskForm').val(),
+                due_date : $('#dueTaskForm').val()
+            }
+            $.ajax({
+					type: 'POST',
+					url: 'http://localhost:3000/tasks/',
+					dataType: 'json',
+                    data: input,
+                    headers : {
+                        token : localStorage.getItem('token')
+                    }
+            })
+            .done(function(task){
+                $('#addNewTask').modal('toggle')
+                fetchTask()
+            })
+            .fail(function(xhr, status, error){
+                var errorMessage = xhr.status + ': ' + xhr.responseText
+                console.log(errorMessage)
+                $('.modal-body').prepend(`
+                    <div class="alert alert-danger" role="alert">
+                        ${errorMessage}
+                    </div>
+                `)
+            })
+        })
+        $('#addGroupTaskForm').submit(function(e){
+            e.preventDefault()
+            var input = {
+                title : $('#titleGroupTaskForm').val(),
+                description : $('#descGroupTaskForm').val(),
+                due_date : $('#dueGroupTaskForm').val()
+            }
+            $.ajax({
+					type: 'POST',
+					url: `http://localhost:3000/projects/${currentIdGroup}/task`,
+					dataType: 'json',
+                    data: input,
+                    headers : {
+                        token : localStorage.getItem('token')
+                    }
+            })
+            .done(function(task){
+                $('#addGroupTask').modal('toggle')
+                showDetailGroup(currentIdGroup)
+            })
+            .fail(function(xhr, status, error){
+                var errorMessage = xhr.status + ': ' + xhr.responseText
+                console.log(errorMessage)
+                $('.modal-body').prepend(`
+                    <div class="alert alert-danger" role="alert">
+                        ${errorMessage}
+                    </div>
+                `)
+            })
+        })
+        $('.modal').on('hidden.bs.modal', function(){
+            $(this).find('form')[0].reset();
+        });
+        $('#addNewGroup').submit(function(e){
+            e.preventDefault()
+            var input = {
+                name : $('#nameGroup').val()
+            }
+            $.ajax({
+					type: 'POST',
+					url: 'http://localhost:3000/projects/',
+					dataType: 'json',
+                    data: input,
+                    headers : {
+                        token : localStorage.getItem('token')
+                    }
+            })
+            .done(function(project){
+                $("#addNewGroup").trigger("reset");
+                fetchGroup()
+            })
+            .fail(function(xhr, status, error){
+                var errorMessage = xhr.status + ': ' + xhr.responseText
+                console.log(errorMessage)
+                $('#addNewGroup').append(`
+                    <div class="alert alert-danger" role="alert">
+                        ${errorMessage}
+                    </div>
+                `)
+            })
+        })
+        var email = $('#nameMember').val()
+        var currentIdGroup = ''
+        $('#addNewMember').submit(function(e){
+            e.preventDefault()
+            console.log($(this).attr(id))
+            console.log("adding...",)
+            $.ajax({
+                    type: 'PUT',
+                    url: `http://localhost:3000/projects/${currentIdGroup}/invite/${email}`,
+                    dataType: 'json',
+                    headers : {
+                        token : localStorage.getItem('token')
+                    }
+            })
+            .done(function(project){
+                console.log(project,"========")
+            })
+            .fail(function(xhr, status, error){
+                var errorMessage = xhr.status + ': ' + xhr.responseText
+                console.log(errorMessage)
+                $('#addNewMember').append(`
+                    <div class="alert alert-danger" role="alert">
+                        ${errorMessage}
+                    </div>
+                `)
+            })
+        })
+    
+        
+        //FUNCTION
+        function checkLogin(){
+            if(localStorage.getItem('token')){
+                $('#app').show()
+                fetchTask()
+                fetchGroup()
+                $('#login').hide()
+                $('#signup').hide()
+            }else{
+                $('#login').show()
+                $('#app').hide()
+                $('#signup').hide()   
+            }
+        }
+        function fetchTask(){
+            console.log("load data")
+            $('#list-task').empty()
+            $.ajax({
+                url : 'http://localhost:3000/tasks/myTask', 
+                headers : {
+                    token : localStorage.getItem('token')
+                }
+            })
+            .done(function(tasks){
+                tasks.forEach(task => {
+                    var date = new Date (task.due_date).toDateString()
+                    $('#list-task').append(`
+                        <div class="col-md-4">
+                            <div class="card" style="max-width: 15rem;">
+                                    <div class="card-body">
+                                        <h5 class="card-title">${task.title}</h5>
+                                        <h6 class="card-subtitle mb-2 text-muted">Due : ${date}</h6>
+                                        <p class="card-text">${task.description}</p>
+                                        <div style="justify-content: center">
+                                            <input type="button" name=${task._id} class="btn btn-primary btn-sm" value="${task.status}" onclick="updateStatusTask(this.name, this.value)"></input>
+                                            <input type="button" name=${task._id} class="btn btn-danger btn-sm" onclick="deleteTask(this.name)" value="Delete"></input>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                    `)
+                });
+                
+            })
+            .fail(function(err){
+                console.log(err)
+            })
+        }
+        function fetchGroup(){
+            $('#list-group ul').empty()
+            $.ajax({
+                url : 'http://localhost:3000/projects/myProject', 
+                headers : {
+                    token : localStorage.getItem('token')
+                }
+            })
+            .done(function(user){
+                    user.projects.forEach(project=>{
+                        $('#list-group ul').append(`
+                            <li class="list-group-item" id=${project._id} onclick="showDetailGroup(this.id)">${project.name}</li>
+                        `)
+                    })
+                
+            })
+            .fail(function(err){
+                console.log(err)
+            })
+        }
+        function deleteTask(id){
+            $.ajax({
+                type : 'DELETE',
+                url : `http://localhost:3000/tasks/${id}`, 
+                headers : {
+                    token : localStorage.getItem('token')
+                }
+            })
+            .done(function(tasks){
+                fetchTask()
+            })
+            .fail(function(err){
+                console.log(err)
+            })
+        }
+        function updateStatusTask(id, status){
+            // console.log("masuk sini")
+            if(status == 'done'){
+                var newStatus = 'on progress'
+            }else{
+                var newStatus = 'done'
+            }
+            $.ajax({
+                type : 'PUT',
+                url : `http://localhost:3000/tasks/${id}`, 
+                headers : {
+                    token : localStorage.getItem('token')
+                },
+                data : {
+                    status : newStatus
+                }
+            })
+            .done(function(tasks){
+                fetchTask()
+                showDetailGroup(currentIdGroup)
+            })
+            .fail(function(err){
+                console.log(err)
+            })
+        }
+        function showProjectTab(){
+            $('#menu-project').show()
+            $('#menu-task').hide()
+            $('#list-group').show()
+            $('.tab-task').removeClass('active')
+            $('.tab-project').addClass('active')
+        }
+        function showTaskTab(){
+            $('#menu-task').show()
+            $('#menu-project').hide()
+            $('#list-group').hide()
+            $('.tab-task').addClass('active')
+            $('.tab-project').removeClass('active')
+        }
+        
+        function showDetailGroup(id){
+            currentIdGroup = id;
+            $('#detailGroup').empty()
+            $.ajax({
+                url : `http://localhost:3000/projects/${id}`, 
+                headers : {
+                    token : localStorage.getItem('token')
+                }
+            })
+            .done(function(group){
+                console.log(group)
+                $('#detailGroup').append(`
+                    <h3> ${group.name}</h3>
+                    <div class="input-group mb-3">
+                        <div class="form-inline" id="addNewMember">
+                            <input type="text" class="form-control" id="nameMember" placeholder="input member name" aria-label="input member name" aria-describedby="button-addon2">
+                            <button class="btn btn-primary" type="submit" id="${group._id}" value="Add New Member">Add New Member</button>   
+                        </div>
+                    </div>
+                    <h5> Member (${group.members.length}) : </h5>
+                    <div id="listofmember">
+                    </div>
+                    <h5> Task : </h5> <button class="btn btn-primary" data-toggle="modal" data-target="#addGroupTask">Add Group Task</button>
+                    <div  class="row" id="listoftaskgroup">
+
+                    </div>
+                `)
+                group.members.forEach(member=>{
+                    $('#listofmember').append(`
+                    <ul>
+                        <li> ${member.email}</li>
+                    </ul>
+                    `)
+                })
+                group.tasks.forEach(task=>{
+                    var date = new Date (task.due_date).toDateString()
+                    $('#listoftaskgroup').append(`
+                    <div class="col-md-4">
+                        <div class="card" style="max-width: 15rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title">${task.title}</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">Due : ${date}</h6>
+                                    <p class="card-text">${task.description}</p>
+                                    <div style="justify-content: center">
+                                        <input type="button" name=${task._id} class="btn btn-primary btn-sm" value="${task.status}" onclick="updateStatusTask(this.name, this.value)"></input>
+                                        <input type="button" name=${task._id} class="btn btn-danger btn-sm" onclick="deleteTask(this.name)" value="Delete"></input>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                    `)
+                })
+            })
+            .fail(function(err){
+                console.log(err)
+            })
+        }
+
+        function showLoginForm(){
+            $('#login').show()
+            $('#app').hide()
+            $('#signup').hide()  
+        }
+        function showSignUpForm(){
+            $('#signup').show()  
+            $('#login').hide()
+            $('#app').hide()
+        }
+        function logOut(){
+            localStorage.removeItem('token')
+            signOutGoogle()
+            checkLogin()
+        }
+        function onSignIn(googleUser) {
+            var tokenId = googleUser.getAuthResponse().id_token;
+            $.ajax({
+                type: 'POST',
+                url: 'http://localhost:3000/googlesign/',
+                dataType: 'json',
+                data: {
+                    token: tokenId
+                }
+            })
+            .done(function(dataLogin){
+                console.log(dataLogin,"ccccccc")
+                localStorage.setItem('token', dataLogin.token)
+                checkLogin()
+            })
+            .fail(function(error){
+                console.log(error)
+            })
+        }
+        function signOutGoogle() {
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function () {
+                console.log('User signed out.');
+            });
+        }
+
+
+    </script>
+</body>
+</html>

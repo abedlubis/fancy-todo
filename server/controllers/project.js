@@ -1,4 +1,5 @@
 const Project = require('../models/project');
+const Task = require('../models/task')
 const User = require('../models/user')
 const {verifyToken} = require('../helpers/index')
 
@@ -10,11 +11,30 @@ module.exports = {
             members: req.userId,
         }, function(err,project){
             if(err){
+                console.log(err)
                 res.status(400).json(err)
             }else{
                 res.status(200).json({
                     msg : "Project Created",
                     project
+                })
+            }
+        })
+    },
+    createTask: function(req,res,next){
+        const id = req.userId;
+        Task.create({
+            title: req.body.title,
+            description: req.body.description,
+            due_date: req.body.due_date,
+            groupId: req.params.id
+        }, function(err,task){
+            if(err){
+                res.status(400).json(err.message)
+            }else{
+                res.status(200).json({
+                    msg : "Task Created",
+                    task
                 })
             }
         })
@@ -28,9 +48,24 @@ module.exports = {
             }
         })
     },
-    findOne:function(req, res, next){
+    findMine:function(req, res, next){
         const userId = req.userId;
-        Project.findOne({_id : req.params.id}, function(err, project){
+        User.findOne({_id : userId})
+        .populate('projects')
+        .exec(function(err, user){
+            if(err){
+                res.status(400).json(err)
+            }else{
+                console.log(user)
+                res.status(200).json(user)
+            }
+        })
+    },
+    findOne:function(req, res, next){
+        Project.findOne({_id : req.params.id})
+        .populate('members')
+        .populate('tasks')
+        .exec(function(err, project){
             if(err){
                 res.status(400).json(err)
             }else{
@@ -85,6 +120,5 @@ module.exports = {
                 }
             }
         })
-        
     }
 }

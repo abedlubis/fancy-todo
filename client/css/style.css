@@ -1,0 +1,122 @@
+.signin-image img {
+  max-width: 100%;
+  height: auto; 
+}
+
+.signin-image figure {
+  margin: 0; 
+}
+
+.signin-form h2 {
+  line-height: 1.66;
+  margin: 0;
+  padding: 0;
+  font-weight: bold;
+  color: #222;
+  font-family: Lato;
+  font-size: 36px; 
+}
+
+#login, #signup {
+  font-size: 15px;
+  line-height: 1.8;
+  color: #222;
+  background: #f8f8f8;
+  font-weight: 400;
+}
+#app {
+  width: 900px;
+  margin: auto;
+}
+.sign {
+  margin : 15vh 0;
+}
+
+.sign-container {
+  width: 750px;
+  background: #fff;
+  margin: 0 auto;
+  padding: 30px 0;
+  display: flex;
+  border-radius: 20px;
+  -moz-border-radius: 20px;
+  -webkit-border-radius: 20px;
+  -o-border-radius: 20px;
+  -ms-border-radius: 20px; 
+  box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
+  -webkit-box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
+  -o-box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
+  -ms-box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
+}
+
+.signup-content, .signin-content{
+  padding: 75px 0; 
+}
+
+.signup-image {
+  margin: 45px 55px; 
+}
+
+.signup-form {
+  margin-left: 75px;
+  margin-right: 75px;
+  padding-left: 4px; 
+}
+
+.signin-form {
+  margin-right: 90px;
+  margin-left: 80px; }
+
+.signin-image {
+  margin : 10px 20px 0 110px;
+}
+.signup-link .signin-link {
+  font-size: 14px;
+  color: #222;
+  display: block;
+  text-align: center; 
+}
+
+.input-group{
+  position: relative;
+  margin-bottom: 25px;
+  overflow: hidden; 
+}
+
+.input-group:last-child {
+  margin-bottom: 0px; 
+}
+
+.input-login {
+  width: 100%;
+  display: block;
+  border: none;
+  border-bottom: 1px solid #999;
+  padding: 6px 30px;
+  font-family: Lato;
+  box-sizing: border-box; 
+}
+.label-login {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  color: #222; 
+}
+
+.social-login {
+  display: flex;
+  align-items: center;
+  -moz-align-items: center;
+  -webkit-align-items: center;
+  -o-align-items: center;
+  -ms-align-items: center;
+  padding: 0px 10px;
+  margin: 10px 0; 
+}
+

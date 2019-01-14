@@ -27,7 +27,7 @@ module.exports = {
     findOne : function(req,res,next){
         const id = req.userId;
         User.findOne({_id : id}).
-        populate('todo').
+        populate('tasks','projects').
         exec(function(err, user){
             res.status(200).json(user)
         });

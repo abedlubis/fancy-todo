@@ -1,11 +1,12 @@
 const User = require('../models/user')
 const Project = require('../models/project')
-const {verifyToken} = require('../helpers/index')
+const {verifyJWT} = require('../helpers/index')
+const {OAuth2Client} = require('google-auth-library');
 
 
 module.exports = {
     Authentication : function(req, res, next){
-        let {id, email} = verifyToken(req.headers.token)
+        let {id, email} = verifyJWT(req.headers.token)
         User.findOne({_id : id}, function(err, data){
             if(err){
                 res.status(400).json(err)

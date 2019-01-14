@@ -5,7 +5,7 @@ const {Authentication} = require('../Middlewares')
 
 
 /* GET users listing. */
-router.post('/',Authentication, userController.findOne);
+router.get('/',Authentication, userController.findOne);
 router.put('/:id',Authentication, userController.update);
 router.delete('/:id',Authentication, userController.delete);
 

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const User = require('./user');
+const Project = require('./project');
 const Schema = mongoose.Schema;
 
 var taskSchema = new Schema({
@@ -23,20 +24,22 @@ var taskSchema = new Schema({
         type: String,
         default: 'on progress'
     },
-    user: { type: Schema.Types.ObjectId, ref: 'User'}
+    user: { type: Schema.Types.ObjectId, ref: 'User'},
+    groupId : {type: Schema.Types.ObjectId, ref: 'Project'}
 })
 taskSchema.post('save', function(doc){
-    console.log(doc._id,"==========")
-    User.findByIdAndUpdate(doc.user, { '$push': { 'tasks': doc._id }}, function(err){
-        if(err) throw new Error(err.message)
-    })
-    doc.save()
-})
-taskSchema.post('findOneAndDelete', function(doc){
-    User.findByIdAndUpdate(doc.user, { '$pull': { 'tasks': doc._id }}, function(err){
-        if(err) throw new Error(err.message)
-    })
-    doc.save()
+    if(doc.user){
+        User.findByIdAndUpdate(doc.user, { '$push': { 'tasks': doc._id }}, function(err){
+            if(err) throw new Error(err.message)
+        })
+        // doc.save()
+    }else if(doc.groupId){
+        Project.findByIdAndUpdate(doc.groupId, { '$push': { 'tasks': doc._id }}, function(err){
+            if(err) throw new Error(err.message)
+        })
+        // doc.save()
+    }
+    
 })
 
 var Task = mongoose.model('Task', taskSchema)
